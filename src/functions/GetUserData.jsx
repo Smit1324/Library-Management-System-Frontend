@@ -3,8 +3,12 @@ import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { ColorRing } from 'react-loader-spinner'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { login } from '../actions/userActions'
+import { getAll } from '../actions/bookActions'
 
 const GetUserData = () => {
 
@@ -13,6 +17,7 @@ const GetUserData = () => {
 
     const [formData, setFormData] = useState({ email: "", password: "" })
     const [passToText, setPassToText] = useState(false)
+    const [loader, setLoader] = useState(false)
 
     const changeType = e => {
         e.preventDefault();
@@ -25,42 +30,85 @@ const GetUserData = () => {
 
     const handleSubmit = async e => {
         e.preventDefault();
+        setLoader(true)
 
         const { email, password } = formData
 
-        const userRes = await fetch(`https://library-management-system-server.onrender.com/api/users/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email, password
-            })
-        })
+        try {
 
-        if (userRes.status === 200) {
-
-            const userResData = await userRes.json()
-            const { id, token } = userResData;
-
-            const userRes2 = await fetch(`https://library-management-system-server.onrender.com/api/users/${id}`, {
-                method: "GET",
+            const userRes = await fetch(`https://library-management-system-server.onrender.com/api/users/login`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "x-auth-token": token
-                }
+                },
+                body: JSON.stringify({
+                    email, password
+                })
             })
 
-            const userResData2 = await userRes2.json();
-            const { name, email, books } = userResData2.user
-            dispatch(login(id, token, name, email, books))
+            if (userRes.status === 200) {
 
-            navigate('/')
+                const userResData = await userRes.json()
+                const { id, token } = userResData;
+
+                const userRes2 = await fetch(`https://library-management-system-server.onrender.com/api/users/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-auth-token": token
+                    }
+                })
+
+                const userResData2 = await userRes2.json();
+                const { name, email, books } = userResData2.user
+
+                const issuedBooks = []
+                books.map(async (ele) => {
+                    const issuedBooksRes = await fetch(`https://library-management-system-server.onrender.com/api/books/${ele}`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
+                    })
+                    const issuedBooksData = await issuedBooksRes.json();
+                    issuedBooks.push(issuedBooksData.book)
+                })
+
+                dispatch(login(id, token, name, email, issuedBooks))
+
+                const booksRes = await fetch(`https://library-management-system-server.onrender.com/api/books/`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+
+                const booksData = await booksRes.json();
+
+                booksData.books.map((ele) => {
+                    return (
+                        dispatch(getAll(ele))
+                    )
+                })
+
+                toast.success("Login Successful");
+                setTimeout(() => {
+                    navigate('/home')
+                }, 2200);
+
+
+            }
+            else {
+                const userResData = await userRes.json()
+                toast.warn(userResData.error);
+            }
         }
-        else {
-            const userResData = await userRes.json()
-            alert(userResData.error);
+
+        catch (error) {
+            console.log(error);
         }
+
+        setLoader(false)
 
     }
 
@@ -99,11 +147,32 @@ const GetUserData = () => {
             </div>
 
             <button
-                className='w-96 h-12 flex items-center justify-center border-2 border-blue-500 rounded-lg text-blue-600 text-xl font-medium hover:bg-blue-500 hover:text-white mt-5'
-                onClick={handleSubmit}
+                className={loader ? 'w-96 h-12 flex items-center justify-center border-2 border-blue-500 rounded-lg bg-blue-500 mt-5' : 'w-96 h-12 flex items-center justify-center border-2 border-blue-500 rounded-lg text-blue-600 text-xl font-medium hover:bg-blue-500 hover:text-white mt-5'}
+                onClick={loader ? e => e.preventDefault() : handleSubmit}
             >
-                Login
+                {loader ? <ColorRing
+                    visible={true}
+                    height="40"
+                    width="40"
+                    ariaLabel="blocks-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="blocks-wrapper"
+                    colors={['white', 'white', 'white', 'white', 'white']}
+                /> : "Login"}
             </button>
+
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
 
         </form>
     )

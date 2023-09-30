@@ -4,7 +4,7 @@ const initialUser = {
     token: null,
     name: null,
     email: null,
-    books: null
+    books: []
 }
 
 const userReducer = (user = initialUser, action) => {
@@ -29,8 +29,16 @@ const userReducer = (user = initialUser, action) => {
                 token: null,
                 name: null,
                 email: null,
-                books: null
+                books: []
             };
+
+        case 'ISSUE_BOOK':
+            user.books.push(action.payload)
+            return user;
+
+        case 'RETURN_BOOK':
+            user.books = user.books.filter(ele => ele._id !== action.payload)
+            return user;
 
         default:
             return user

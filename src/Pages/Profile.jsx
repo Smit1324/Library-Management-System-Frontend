@@ -1,15 +1,46 @@
-import React from 'react'
-import { AiFillPlusCircle } from "react-icons/ai";
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import Navbar from '../Components/Navbar'
 import ProfilePic from '../Assets/Profile.png'
 import store from '../store/store';
+import Boxes from '../Components/Boxes'
+import Book from '../Assets/Book.png'
 
 const Profile = () => {
 
-    const userState = store.getState();
+    const userState = store.getState().users;
+    const diff = 5 - userState.books.length;
+    const [upperArr, setUpperArr] = useState([])
+    const [lowerArr, setLowerArr] = useState([])
     const navigate = useNavigate();
+
+    useEffect(() => {
+        switch (diff) {
+            case 1:
+                setUpperArr([])
+                setLowerArr([0])
+                break;
+            case 2:
+                setUpperArr([])
+                setLowerArr([0, 1])
+                break;
+            case 3:
+                setUpperArr([0])
+                setLowerArr([0, 1])
+                break;
+            case 4:
+                setUpperArr([0, 1])
+                setLowerArr([0, 1])
+                break;
+            case 5:
+                setUpperArr([0, 1, 2])
+                setLowerArr([0, 1,])
+                break;
+            default:
+                break;
+        }
+    }, [])
 
     return (
         <>
@@ -19,51 +50,75 @@ const Profile = () => {
 
                 <div className='w-10/12 h-5/6 px-20 flex items-center justify-between border-2 border-green-200 rounded-xl shadow-xl shadow-green-100 mt-16'>
                     <div className='flex flex-col items-center justify-center'>
-                        <p className='text-3xl font-semibold mb-7'>MY PROFILE</p>
+                        <p className='text-3xl font-semibold mb-7 shadow-sm'> MY PROFILE</p>
                         <div>
                             <img src={ProfilePic} alt="profile pic" className='w-52 h-48' />
                         </div>
                         <div className='flex flex-col items-center justify-center mt-3 border-2 border-zinc-300 rounded-lg shadow-lg shadow-zinc-300 w-72 h-32'>
-                            <p className='text-lg font-medium'>{userState.users.name}</p>
-                            <p className='text-sm font-extralight mt-1'>{userState.users.email}</p>
-                            <p className='font-medium mt-5'>No. of books issued : {userState.users.books.length}</p>
+                            <p className='text-lg font-medium'>{userState.name}</p>
+                            <p className='text-sm font-extralight mt-1'>{userState.email}</p>
+                            <p className='font-medium mt-5'>No. of books issued : {userState.books.length}</p>
                         </div>
                     </div>
 
                     <div className='flex flex-col items-center justify-center'>
                         <div className='flex items-center justify-center'>
-                            <button
-                                className='border-4 border-dashed rounded-lg flex items-center justify-center w-40 h-52 text-zinc-300 hover:border-zinc-400 hover:text-zinc-400 mr-3'
-                                onClick={() => navigate('/issuebook')}
-                            >
-                                <AiFillPlusCircle className='text-5xl' />
-                            </button>
-                            <button
-                                className='border-4 border-dashed rounded-lg flex items-center justify-center w-40 h-52 text-zinc-300 hover:border-zinc-400 hover:text-zinc-400 mx-3'
-                                onClick={() => navigate('/issuebook')}
-                            >
-                                <AiFillPlusCircle className='text-5xl' />
-                            </button>
-                            <button
-                                className='border-4 border-dashed rounded-lg flex items-center justify-center w-40 h-52 text-zinc-300 hover:border-zinc-400 hover:text-zinc-400 ml-3'
-                                onClick={() => navigate('/issuebook')}
-                            >
-                                <AiFillPlusCircle className='text-5xl' />
-                            </button>
+                            {
+
+                                userState.books.map((ele, index) => {
+                                    return (
+                                        index <= 2 &&
+                                        <>
+                                            <button
+                                                className='border-2 rounded-lg flex flex-col items-center justify-start w-40 h-52 text-zinc-600 hover:border-zinc-500 hover:text-black mr-3'
+                                                onClick={e => navigate(`/returnbook/${ele._id}`)}
+                                            >
+                                                <img src={Book} alt="book img" className='w-36' />
+                                                <p className='text-sm font-medium mt-1'>{ele.name}</p>
+                                                <p className='text-xs font-extralight'>{ele.author}</p>
+                                            </button>
+
+                                        </>
+                                    )
+                                })
+                            }
+
+                            {upperArr.map(() => {
+                                return (
+                                    <>
+                                        <Boxes />
+                                    </>
+                                )
+                            })}
                         </div>
                         <div className='flex items-center justify-center mt-10'>
-                            <button
-                                className='border-4 border-dashed rounded-lg flex items-center justify-center w-40 h-52 text-zinc-300 hover:border-zinc-400 hover:text-zinc-400 mr-3'
-                                onClick={() => navigate('/issuebook')}
-                            >
-                                <AiFillPlusCircle className='text-5xl' />
-                            </button>
-                            <button
-                                className='border-4 border-dashed rounded-lg flex items-center justify-center w-40 h-52 text-zinc-300 hover:border-zinc-400 hover:text-zinc-400 ml-3'
-                                onClick={() => navigate('/issuebook')}
-                            >
-                                <AiFillPlusCircle className='text-5xl' />
-                            </button>
+                            {
+
+                                userState.books.map((ele, index) => {
+                                    return (
+                                        index >= 3 && index <= 4 &&
+                                        <>
+                                            <button
+                                                className='border-2 rounded-lg flex flex-col items-center justify-start w-40 h-52 text-zinc-600 hover:border-zinc-500 hover:text-black mr-3'
+                                                onClick={e => navigate(`/returnbook/${ele._id}`)}
+                                            >
+                                                <img src={Book} alt="book img" className='w-36' />
+                                                <p className='text-sm font-medium mt-1'>{ele.name}</p>
+                                                <p className='text-xs font-extralight'>{ele.author}</p>
+                                            </button>
+
+                                        </>
+                                    )
+                                })
+                            }
+
+                            {lowerArr.map(() => {
+                                return (
+                                    <>
+                                        <Boxes />
+                                    </>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>
