@@ -126,6 +126,7 @@ const GetUserData = () => {
                 name='email'
                 value={formData.email}
                 onChange={e => handleInput(e)}
+                autoComplete='off'
             />
 
             <div className='relative'>
@@ -136,6 +137,7 @@ const GetUserData = () => {
                     name='password'
                     value={formData.password}
                     onChange={e => handleInput(e)}
+                    autoComplete='off'
                 />
                 <button
                     className='absolute top-5 right-3'

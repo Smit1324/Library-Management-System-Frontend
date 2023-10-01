@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import Navbar from '../Components/Navbar'
+import Footer from '../Components/Footer'
 import ProfilePic from '../Assets/Profile.png'
 import store from '../store/store';
 import Boxes from '../Components/Boxes'
@@ -123,6 +124,8 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
+
+            <Footer marginTop={'mt-16'} />
 
         </>
     )

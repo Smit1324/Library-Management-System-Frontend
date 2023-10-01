@@ -16,7 +16,7 @@ const IssueABook = () => {
     return (
         <>
             <Navbar />
-            <div className='w-full flex flex-col items-center justify-center'>
+            <div className='w-11/12 flex flex-col items-center justify-center'>
 
                 <div className='w-11/12 flex flex-col justify-center items-start mt-12'>
 
@@ -94,7 +94,7 @@ const IssueABook = () => {
                 </div>
 
             </div>
-            <Footer />
+            <Footer marginTop={'mt-20'} />
         </>
     )
 }

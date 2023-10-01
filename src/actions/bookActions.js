@@ -4,5 +4,5 @@ export const getAll = (book) => ({
 });
 
 export const deleteAll = () => ({
-    type: 'GET_ALL'
+    type: 'DELETE_ALL'
 });

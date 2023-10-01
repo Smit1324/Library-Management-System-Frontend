@@ -95,7 +95,7 @@ const ReturnABook = () => {
 
             </div>
 
-            <Footer />
+            <Footer marginTop={'mt-0'} />
 
             <ToastContainer
                 position="top-center"

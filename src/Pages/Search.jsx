@@ -109,7 +109,7 @@ const Search = () => {
                     }
                 </div>
             </div>
-            <Footer />
+            <Footer marginTop={search === '' ? 'mt-20' : isBtnClicked && book === '' ? 'absolute bottom-0':'mt-10'} />
         </>
     )
 }

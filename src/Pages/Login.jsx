@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Navbar from '../Components/Navbar'
+import Footer from '../Components/Footer'
 import LoginVector from '../Assets/Login.png'
 import GetUserData from '../functions/GetUserData'
 
@@ -21,6 +22,8 @@ const Login = () => {
 
         </div>
       </div>
+
+      <Footer marginTop={'mt-0'}/>
     </>
   )
 }
