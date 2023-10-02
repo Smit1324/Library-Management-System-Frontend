@@ -11,6 +11,10 @@ import Profile from './Pages/Profile';
 import Logout from './functions/Logout';
 import Error from './Pages/Error';
 
+import AdminHome from './Pages/AdminHome'
+import AddBook from './Pages/AddBook'
+import ViewBook from './Pages/ViewBook'
+
 const App = () => {
     return (
         <Router>
@@ -24,6 +28,10 @@ const App = () => {
                 <Route exact path='/profile' element={<Profile />}></Route>
                 <Route exact path='/logout' element={<Logout />}></Route>
                 <Route exact path='*' element={<Error />}></Route>
+
+                <Route exact path='/admin' element={<AdminHome />}></Route>
+                <Route exact path='/admin/addbook' element={<AddBook />}></Route>
+                <Route exact path='/admin/viewbook/:id' element={<ViewBook />}></Route>
             </Routes>
         </Router>
     )

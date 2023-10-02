@@ -4,6 +4,7 @@ const initialUser = {
     token: null,
     name: null,
     email: null,
+    isAdmin: false,
     books: []
 }
 
@@ -18,6 +19,7 @@ const userReducer = (user = initialUser, action) => {
                 token: action.payload.token,
                 name: action.payload.name,
                 email: action.payload.email,
+                isAdmin: action.payload.admin,
                 books: action.payload.books,
             };
 
@@ -29,6 +31,7 @@ const userReducer = (user = initialUser, action) => {
                 token: null,
                 name: null,
                 email: null,
+                isAdmin: false,
                 books: []
             };
 

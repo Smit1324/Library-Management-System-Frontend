@@ -8,6 +8,14 @@ const bookReducer = (book = initialBook, action) => {
             book.push(action.payload);
             return book
 
+        case "ADD_BOOK":
+            book.push(action.payload);
+            return book
+
+        case "DELETE_BOOK":
+            book = book.filter(ele => ele._id !== action.payload)
+            return book
+
         case "DELETE_ALL":
             book.splice(0);
             return book

@@ -13,7 +13,7 @@ import { getAll } from '../actions/bookActions'
 const GetUserData = () => {
 
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({ email: "", password: "" })
     const [passToText, setPassToText] = useState(false)
@@ -60,7 +60,7 @@ const GetUserData = () => {
                 })
 
                 const userResData2 = await userRes2.json();
-                const { name, email, books } = userResData2.user
+                const { name, email, isAdmin, books } = userResData2.user
 
                 const issuedBooks = []
                 books.map(async (ele) => {
@@ -71,10 +71,21 @@ const GetUserData = () => {
                         }
                     })
                     const issuedBooksData = await issuedBooksRes.json();
-                    issuedBooks.push(issuedBooksData.book)
+                    if (issuedBooksData.book !== null) {
+                        issuedBooks.push(issuedBooksData.book)
+                    }
+                    else {
+                        await fetch(`https://library-management-system-server.onrender.com/api/users/returnbook/${ele}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "x-auth-token": userResData2.user.tokens[userResData2.user.tokens.length - 1].token
+                            }
+                        })
+                    }
                 })
 
-                dispatch(login(id, token, name, email, issuedBooks))
+                dispatch(login(id, token, name, email, isAdmin, issuedBooks))
 
                 const booksRes = await fetch(`https://library-management-system-server.onrender.com/api/books/`, {
                     method: "GET",
@@ -91,12 +102,18 @@ const GetUserData = () => {
                     )
                 })
 
-                toast.success("Login Successful");
-                setTimeout(() => {
-                    navigate('/home')
-                }, 2200);
-
-
+                if (userResData2.user.isAdmin) {
+                    toast.success("Login Successful");
+                    setTimeout(() => {
+                        navigate('/admin')
+                    }, 2200);
+                }
+                else {
+                    toast.success("Login Successful");
+                    setTimeout(() => {
+                        navigate('/home')
+                    }, 2200);
+                }
             }
             else {
                 const userResData = await userRes.json()
@@ -121,7 +138,7 @@ const GetUserData = () => {
 
             <input
                 type="text"
-                placeholder='Enter your college Id'
+                placeholder='Enter your college Id/Librarian Id'
                 className='outline-none border border-zinc-700 rounded-md w-96 h-10 pl-3 mb-3 mt-10'
                 name='email'
                 value={formData.email}
