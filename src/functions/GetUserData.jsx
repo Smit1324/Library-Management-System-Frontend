@@ -136,33 +136,44 @@ const GetUserData = () => {
                 <p className='font-medium text-3xl text-left text-blue-800'>SignIn To Your Account</p>
             </div>
 
-            <input
-                type="text"
-                placeholder='Enter your college Id/Librarian Id'
-                className='outline-none border border-zinc-700 rounded-md w-96 h-10 pl-3 mb-3 mt-10'
-                name='email'
-                value={formData.email}
-                onChange={e => handleInput(e)}
-                autoComplete='off'
-            />
-
-            <div className='relative'>
+            <div className='flex flex-col items-start justify-start'>
                 <input
-                    type={passToText ? 'text' : 'password'}
-                    placeholder='Enter your password'
-                    className='outline-none border border-zinc-700 rounded-md w-96 h-10 pl-3 my-3'
-                    name='password'
-                    value={formData.password}
+                    type="text"
+                    placeholder='Enter your college Id/Librarian Id'
+                    className='outline-none border border-zinc-700 rounded-md w-96 h-10 pl-3 mb-3 mt-10'
+                    name='email'
+                    value={formData.email}
                     onChange={e => handleInput(e)}
                     autoComplete='off'
                 />
-                <button
-                    className='absolute top-5 right-3'
-                    onClick={changeType}
-                >
-                    {passToText ? <AiFillEye className='text-blue-500 text-2xl' /> : <AiFillEyeInvisible className='text-blue-400 text-2xl' />
-                    }
-                </button>
+                <p className='ms-2 mt-[-4px] text-sm text-black'>
+                    guest id: "testuser78@gmail.com"
+                </p>
+            </div>
+
+            <div className='flex flex-col items-start justify-start'>
+
+                <div className='relative'>
+                    <input
+                        type={passToText ? 'text' : 'password'}
+                        placeholder='Enter your password'
+                        className='outline-none border border-zinc-700 rounded-md w-96 h-10 pl-3 my-3'
+                        name='password'
+                        value={formData.password}
+                        onChange={e => handleInput(e)}
+                        autoComplete='off'
+                    />
+                    <button
+                        className='absolute top-5 right-3'
+                        onClick={changeType}
+                    >
+                        {passToText ? <AiFillEye className='text-blue-500 text-2xl' /> : <AiFillEyeInvisible className='text-blue-400 text-2xl' />
+                        }
+                    </button>
+                </div>
+                <p className='ms-2 mt-[-4px] text-sm text-black'>
+                    password for guest: "abc@123"
+                </p>
             </div>
 
             <button
