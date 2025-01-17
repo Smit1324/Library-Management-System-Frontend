@@ -146,7 +146,7 @@ const GetUserData = () => {
                     onChange={e => handleInput(e)}
                     autoComplete='off'
                 />
-                <p className='ms-2 mt-[-4px] text-sm text-black'>
+                <p className='ms-2 mt-[-5px] text-sm text-gray-500'>
                     guest id: "testuser78@gmail.com"
                 </p>
             </div>
@@ -171,7 +171,7 @@ const GetUserData = () => {
                         }
                     </button>
                 </div>
-                <p className='ms-2 mt-[-4px] text-sm text-black'>
+                <p className='ms-2 mt-[-5px] text-sm text-gray-500'>
                     password for guest: "abc@123"
                 </p>
             </div>
